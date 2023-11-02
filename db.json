@@ -1,0 +1,7 @@
+{
+    "users": [
+      { "id": 1, "name": "John Doue", "isChecked": false },
+      { "id": 2, "name": "Kazemir Kakachkin", "isChecked": false },
+      { "id": 3, "name": "Chack Noris", "isChecked": false }
+    ]
+  }
