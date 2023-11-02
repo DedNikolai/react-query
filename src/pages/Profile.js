@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +12,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
-import Loader from "../components/Loader"
+import Loader from "../components/Loader";
+import { AuthContext } from '../components/AuthProvider';
 
 const schema = yup.object({
     firstName: yup.string().required('Please input firstName').min(2, 'To short').max(20, 'To long'),
@@ -22,10 +23,7 @@ const schema = yup.object({
 const defaultTheme = createTheme();
 
 export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [authStatus, setAuth] = useState('')
-  const updateData = (data) => console.log(data);
-  
+  const {user, update, isLoading} = useContext(AuthContext)
   const {register, handleSubmit, formState: {errors}, reset} = useForm({
         defaultValues: {...user},
         resolver: yupResolver(schema),
@@ -33,7 +31,7 @@ export default function Profile() {
     });  
  
     const onSubmit = (data) => {
-      updateData(data);
+      update(data);
 
   };
 
@@ -43,7 +41,7 @@ export default function Profile() {
     }
   }, [user])
  
-  if (authStatus === 'pending') return <Loader />
+  if (isLoading) return <Loader />
 
   return (
     <ThemeProvider theme={defaultTheme}>

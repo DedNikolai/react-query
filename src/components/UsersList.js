@@ -5,7 +5,7 @@ import List from '@mui/material/List';
 function UsersList({users, setUsers}) {
     return(
         <List sx={{backgroundColor: "#fff"}}>
-            {users.map(user => <UserItem setUsers={setUsers} user={user} key={user.name} />)} 
+            {users.map(user => <UserItem setUsers={setUsers} user={user} key={user.id} />)} 
         </List>
     )
 }

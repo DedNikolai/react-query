@@ -32,7 +32,7 @@ function UserItem({user, setUsers}) {
             {!isEdit ?
                 <>
                     <ListItemText
-                        primary={data.name}
+                        primary={data?.name}
                         className={data?.isCheked ? 'isCheked' : ''}
                     />
                     <Stack direction="row" spacing={2}>

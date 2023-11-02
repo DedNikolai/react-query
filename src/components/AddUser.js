@@ -3,9 +3,20 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import {useMutation, useQueryClient} from 'react-query';
+import {addUser} from '../services/users'
 
-function AddUser({addUser}) {
+function AddUser() {
     const [name, setName] = useState('')
+    const queryClient = useQueryClient()
+
+
+    const mutation = useMutation(addUser, {
+        onSuccess: () => {
+          // Invalidate and refetch
+          queryClient.invalidateQueries('users')
+        },
+      })
 
     const onChange = (e) => {
         setName(e.target.value);
@@ -13,9 +24,7 @@ function AddUser({addUser}) {
 
     const createUser = (e) => {
         e.preventDefault()
-        addUser(prev => {
-            return [...prev, {name: name}]
-        })
+        mutation.mutate({name, isChecked: false})
         setName('')
     }
 

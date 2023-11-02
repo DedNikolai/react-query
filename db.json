@@ -1,7 +1,35 @@
 {
-    "users": [
-      { "id": 1, "name": "John Doue", "isChecked": false },
-      { "id": 2, "name": "Kazemir Kakachkin", "isChecked": false },
-      { "id": 3, "name": "Chack Noris", "isChecked": false }
-    ]
-  }
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doue",
+      "isChecked": false
+    },
+    {
+      "id": 2,
+      "name": "Kazemir Kakachkin",
+      "isChecked": false
+    },
+    {
+      "id": 3,
+      "name": "Chack Noris",
+      "isChecked": false
+    },
+    {
+      "id": 4
+    },
+    {
+      "isChecked": false,
+      "id": 5
+    },
+    {
+      "isChecked": false,
+      "id": 6
+    },
+    {
+      "name": "New User",
+      "isChecked": false,
+      "id": 7
+    }
+  ]
+}
