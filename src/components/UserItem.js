@@ -5,43 +5,54 @@ import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Checkbox from '@mui/material/Checkbox';
+import { deleteUser, updateUser } from "../services/users";
+import {useMutation, useQueryClient} from 'react-query';
 
-function UserItem({user, setUsers}) {
+function UserItem({user}) {
     const [isEdit, setIsEdit] = useState(false)
-    const [data, setData] = useState(user)
+
+    const queryClient = useQueryClient()
+
+    const mutation = useMutation(deleteUser, {
+        onSuccess: () => {
+          // Invalidate and refetch
+          queryClient.invalidateQueries('users')
+        },
+    })
+    
+    const updateMutation = useMutation(updateUser, {
+        onSuccess: () => {
+          // Invalidate and refetch
+          queryClient.invalidateQueries('users')
+        },
+    })
+     
+    const deleteItem = () => mutation.mutate(user.id)
+
 
     const onCheck = (e) => {
-        setData(prev => {
-            return {...prev, isCheked: e.target.checked}
-        })
-    }
-
-    const deleteUser = () => {
-        setUsers(prev => {
-            const users = prev.filter(item => item.name !=data.name)
-            return users;
-        })
+        updateMutation.mutate({...user, isCheked: e.target.checked})
     }
 
     return(
         <ListItem>
             <Checkbox 
-                checked={data?.isCheked || false}
+                checked={user?.isCheked || false}
                 onChange={onCheck}
             />
             {!isEdit ?
                 <>
                     <ListItemText
-                        primary={data?.name}
-                        className={data?.isCheked ? 'isCheked' : ''}
+                        primary={user?.name}
+                        className={user?.isCheked ? 'isCheked' : ''}
                     />
                     <Stack direction="row" spacing={2}>
                         <Button onClick={() => setIsEdit(true)} variant="contained" color="secondary">Edit</Button>
-                        <Button onClick={deleteUser} variant="contained" color="error">Delete</Button>
+                        <Button onClick={deleteItem} variant="contained" color="error">Delete</Button>
                     </Stack>
                 </>
                 :
-                <EditUser update={setData} data={data} edit={setIsEdit} />
+                <EditUser update={() => {}} data={user} edit={setIsEdit} />
             }          
          </ListItem> 
     )

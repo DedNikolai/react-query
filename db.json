@@ -2,8 +2,9 @@
   "users": [
     {
       "id": 1,
-      "name": "John Doue",
-      "isChecked": false
+      "name": "John Kakashka",
+      "isChecked": false,
+      "isCheked": false
     },
     {
       "id": 2,
@@ -16,20 +17,14 @@
       "isChecked": false
     },
     {
-      "id": 4
-    },
-    {
-      "isChecked": false,
-      "id": 5
-    },
-    {
-      "isChecked": false,
-      "id": 6
-    },
-    {
       "name": "New User",
       "isChecked": false,
       "id": 7
+    },
+    {
+      "name": "Pisia Kakin",
+      "isChecked": false,
+      "id": 8
     }
   ]
 }
