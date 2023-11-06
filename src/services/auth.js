@@ -9,7 +9,7 @@ export const logIn = async (data) => {
         if (response.status < 200 || response.status >= 300) {
             throw new Error(response.errors)
         }
-        console.log(response)
+
         Cookies.set("auth-token", response.data.token, { expires: 1 });
         
         return response;
@@ -31,7 +31,7 @@ export const getCurrentUser = async () => {
 
             throw new Error(response.errors)
         }
-        console.log(response)
+
         return response;
         
         }
@@ -53,6 +53,20 @@ export const logOut = async () => {
 
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const updateUser = async (data) => {
+    try {
+        const response = await api.patch("/auth/me", data)
+        
+        if (response.status < 200 ||  response.status >= 300) {
+            throw new Error(response)
+        }
+
+        return response;
+
+    } catch (error) {
     }
 }
     

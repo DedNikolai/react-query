@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from "react";
+import React, {useState, useMemo} from "react";
 import UsersList from "../components/UsersList";
 import Loader from "../components/Loader";
 import AddUser from "../components/AddUser";
@@ -14,17 +14,16 @@ import { useQuery } from "react-query";
 import { getUsers } from "../services/users";
 
 function Users() {
-    const [users, setUsers] = useState([])
     const [params, setParams] = useState('')
 
-    const {data = [], isLoading} = useQuery('users', getUsers)
+    const {data = [], isLoading = true} = useQuery('users', getUsers)
     
     const searchedhUsers = useMemo(() => {
         if(!params) return data
         return data.filter(user => {
             return user.name.toLowerCase().includes(params.toLowerCase())
         })
-    }, [users, params])
+    }, [data, params])
 
     const onChange = (value) => {
         setParams(value);
@@ -57,10 +56,10 @@ function Users() {
                         </Paper>
                 </Grid>
                 <Grid item xs={6}>
-                    <AddUser addUser={setUsers} />
+                    <AddUser addUser={() => {}} />
                 </Grid>
                 <Grid item xs={12}>
-                    <UsersList users={searchedhUsers} setUsers={setUsers} />
+                    <UsersList users={searchedhUsers} setUsers={() => {}} />
                 </Grid>     
             </Grid>
         </Box>

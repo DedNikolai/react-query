@@ -1,5 +1,5 @@
 import React, {createContext, useCallback, useEffect, useMemo, useState} from "react";
-import { getCurrentUser, logIn, logOut } from "../services/auth";
+import { getCurrentUser, logIn, logOut, updateUser } from "../services/auth";
 import Cookies from "js-cookie";
 
 export const AuthContext = createContext(null);
@@ -35,11 +35,19 @@ function AuthProvider({children}) {
             setUser(null)
             setIsLoading(false)
         })
+    }, []);
+
+    const update = useCallback((data) => {
+        setIsLoading(true)
+        updateUser(data).then(res => {
+            setUser(res?.data)
+            setIsLoading(false)
+        })
     }, [])
  
     const auth = useMemo(() => {
-        return {user, isLoading, authUser, logOutUser}
-    }, [user, isLoading, authUser, logOutUser])
+        return {user, isLoading, authUser, logOutUser, update}
+    }, [user, isLoading, authUser, logOutUser, update])
 
     return (
         <AuthContext.Provider value={auth}>
