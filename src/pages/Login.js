@@ -16,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {AuthContext} from '../components/AuthProvider';
+import {logIn} from "../services/auth";
+import {useMutation, useQueryClient} from 'react-query';
 
 const schema = yup.object({
     email: yup.string().email('Invalid Email').required('Please input email'),
@@ -42,7 +44,17 @@ const defaultTheme = createTheme();
 export default function Login() {
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || '/';
-  const {user, authUser} = useContext(AuthContext)
+  const {user} = useContext(AuthContext)
+
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation(logIn, {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries('user')
+      },
+    })
+
   
   const {register, handleSubmit, formState: {errors}, reset} = useForm({
     resolver: yupResolver(schema),
@@ -52,7 +64,7 @@ export default function Login() {
   if (user) return <Navigate to={`${fromPage}`} />  
   
   const onSubmit = (data) => {
-    authUser(data)
+    mutation.mutate(data)
     reset();
   };
 

@@ -9,7 +9,8 @@
     {
       "id": 2,
       "name": "Kazemir Kakachkin",
-      "isChecked": false
+      "isChecked": false,
+      "isCheked": true
     },
     {
       "id": 3,
@@ -22,7 +23,7 @@
       "id": 7
     },
     {
-      "name": "Pisia Kakin",
+      "name": "New Kaka",
       "isChecked": false,
       "id": 8
     }

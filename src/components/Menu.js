@@ -6,9 +6,25 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import {NavLink } from 'react-router-dom';
 import { AuthContext } from "./AuthProvider";
+import {logOut} from "../services/auth";
+import {useMutation, useQueryClient} from 'react-query';
 
 export default function Menu() {
-  const {logOutUser, user}= useContext(AuthContext);
+  const {user}= useContext(AuthContext);
+
+  const queryClient = useQueryClient()
+
+
+  const mutation = useMutation(logOut, {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries('user')
+      },
+    })
+
+  const logOutUser = () => {
+    mutation.mutate();
+  }  
   
   return (
     <Box sx={{ flexGrow: 1 }}>

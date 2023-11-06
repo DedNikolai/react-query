@@ -22,23 +22,26 @@ export const logIn = async (data) => {
 }
 
 export const getCurrentUser = async () => {
+    const tokenData = Cookies.get("auth-token");
 
-    try {
+    if (tokenData) {
+        try {
 
-        const response = await api.get("/auth/me")
-
-        if (response.status < 200 || response.status >= 300) {
-
-            throw new Error(response.errors)
-        }
-
-        return response;
-        
-        }
-
-        catch (error) {
-            console.log(error)
-        }
+            const response = await api.get("/auth/me")
+    
+            if (response.status < 200 || response.status >= 300) {
+    
+                throw new Error(response.errors)
+            }
+    
+            return response.data;
+            
+            }
+    
+            catch (error) {
+                console.log(error)
+            }
+    }
 }
 
 export const logOut = async () => {
