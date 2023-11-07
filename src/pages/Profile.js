@@ -14,6 +14,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
 import Loader from "../components/Loader";
 import { AuthContext } from '../components/AuthProvider';
+import {updateUser} from "../services/auth";
+import {useMutation, useQueryClient} from 'react-query';
 
 const schema = yup.object({
     firstName: yup.string().required('Please input firstName').min(2, 'To short').max(20, 'To long'),
@@ -23,23 +25,31 @@ const schema = yup.object({
 const defaultTheme = createTheme();
 
 export default function Profile() {
-  const {user, update, isLoading} = useContext(AuthContext)
+  const {user, isLoading} = useContext(AuthContext)
   const {register, handleSubmit, formState: {errors}, reset} = useForm({
         defaultValues: {...user},
         resolver: yupResolver(schema),
         mode: 'onBlur'
-    });  
+    });
+    
+    const queryClient = useQueryClient()
+
+    const mutation = useMutation(updateUser, {
+        onSuccess: () => {
+          // Invalidate and refetch
+          queryClient.invalidateQueries('user')
+        },
+      })  
  
     const onSubmit = (data) => {
-      update(data);
-
+      mutation.mutate(data);
   };
 
   useEffect(() => {
     if(user) {
         reset(user)
     }
-  }, [user])
+  }, [user, reset])
  
   if (isLoading) return <Loader />
 
