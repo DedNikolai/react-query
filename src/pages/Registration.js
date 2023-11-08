@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,7 +15,11 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
 import { Navigate } from "react-router-dom";
-import Loader from "../components/Loader"
+import Loader from "../components/Loader";
+import {registerNewUser} from '../services/auth';
+import {status} from '../constants/constants';
+import { AuthContext } from '../components/AuthProvider';
+
 
 const schema = yup.object({
     email: yup.string().email('Invalid Email').required('Please input email'),
@@ -42,10 +46,8 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Rgestration() {
-  const [user, setUser] = useState(null);
-  const [authStatus, setAuth] = useState('')
-
-  const userAuth = (data) => console.log(data);
+  const [authStatus, setAuth] = useState('');
+  const {user} = useContext(AuthContext)
 
   const {register, handleSubmit, formState: {errors}, reset} = useForm({
         resolver: yupResolver(schema),
@@ -53,13 +55,17 @@ export default function Rgestration() {
     });  
  
     const onSubmit = (data) => {
-      userAuth(data);
-      reset();
+      setAuth(status.PANDING)
+      registerNewUser(data).then(() => {
+        reset();
+      }).finally(() => {
+        setAuth(status.FULFILLED)
+      })
   };
 
   if (user) return <Navigate to={`/`} />
-  if (authStatus === 'panding') return <Loader />
-  if (authStatus === 'fulfilled') return <Navigate to={`/login`} />
+  if (authStatus === status.PANDING) return <Loader />
+  if (authStatus === status.FULFILLED) return <Navigate to={`/login`} />
 
   return (
     <ThemeProvider theme={defaultTheme}>

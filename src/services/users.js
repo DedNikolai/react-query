@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 export const getUsers = async () => {
 
@@ -21,7 +22,7 @@ export const addUser = async (data) => {
         if (response.status < 200 && response.status >= 300) {
             throw new Error("Server error")
         }
-
+        toast.success('New user was created')
         return response.data;
 
     } catch (error) {
@@ -37,7 +38,7 @@ export const deleteUser = async (id) => {
        if (response.status < 200 && response.status >= 300) {
             throw new Error("Server error")
         }
-
+        toast.success('User was deleted')
         return response.data;
      } catch (error) {
         console.log(error)
@@ -50,7 +51,7 @@ export const updateUser = async (data) => {
         if (response.status < 200 && response.status >= 300) {
             throw new Error("Server error")
         }
-
+        toast.success('User was updated')
         return response.data;
 
     } catch (error) {
