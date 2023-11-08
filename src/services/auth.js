@@ -1,12 +1,14 @@
 import api from './api';
 import Cookies from "js-cookie";
+import { toast } from 'react-toastify';
 
 export const logIn = async (data) => {
     try {
 
         const response = await api.post("/auth/email/login", data)
-
-        if (response.status < 200 || response.status >= 300) {
+        console.log('PUK')
+        if (response.response.data.status < 200 || response.response.data.status >= 300) {
+            toast.error('Wrong mail or password')
             throw new Error(response.errors)
         }
 
@@ -16,8 +18,8 @@ export const logIn = async (data) => {
         
         }
 
-        catch (error) {
-            console.log(error)
+        catch (res) {
+            toast.error('Wrong mail or password')
         }
 }
 
@@ -70,6 +72,21 @@ export const updateUser = async (data) => {
         return response;
 
     } catch (error) {
+    }
+}
+
+export const registerNewUser = async (data) => {
+    try {
+        const response = await api.post("/auth/email/register", data)
+        
+        if (response.status < 200 ||  response.status >= 300) {
+            throw new Error(response.errors)
+        }
+
+        return response;
+
+    } catch (error) {
+        console.log(error)
     }
 }
     
